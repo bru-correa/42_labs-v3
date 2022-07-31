@@ -2,7 +2,7 @@
 
 int	main(void)
 {
-	test_http_req("google POST", "google.com", "POST", 200);
-	test_http_req("intra test", "intra.42.fr", "GET", 200);
+	curl_global_init(CURL_GLOBAL_ALL);
+	curl_global_cleanup();
 	return (0);
 }

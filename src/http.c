@@ -1,17 +1,16 @@
 #include "monitoring.h"
 
-// TODO Struct to handle each protocol
-
-void	test_http_req(char *name, char *url, char *method, long expected)
+void	test_http_req(t_http_data http_data, char *log_filename)
 {
-	long	response;
-	if (strncmp(url, "http://", 7) == 0 || strncmp(url, "https://", 8) == 0)
-		url = set_url_prefix(url);
-	if (strcmp(method, "GET") == 0)
-		response = check_http_get(url);
-	else if (strcmp(method, "POST") == 0)
-		response = check_http_post(url);
-	write_http_log(name, response, expected, "monitoring.log", url);
+	if (strncmp(http_data.url, "http://", 7) == 0
+		|| strncmp(http_data.url, "https://", 8) == 0)
+		http_data.url = set_url_prefix(http_data.url);
+	// if (strcmp(method, "GET") == 0)
+	// 	response = check_http_get(url);
+	// else if (strcmp(method, "POST") == 0)
+	// 	response = check_http_post(url);
+	http_data.response = check_http_request(http_data);
+	write_http_log(http_data, log_filename);
 }
 
 char	*set_url_prefix(char *url)
@@ -23,10 +22,10 @@ char	*set_url_prefix(char *url)
 	return (url_with_prefix);
 }
 
-long	check_http_get(char *url)
+long	check_http_request(t_http_data http_data)
 {
 	CURL	*curl;
-	long	response_code;
+	long	response;
 
 	curl = curl_easy_init();
 	if (!curl)
@@ -34,52 +33,31 @@ long	check_http_get(char *url)
 		fprintf(stderr, "ERROR: Failed to init curl\n");
 		exit(EXIT_FAILURE);
 	}
-	curl_easy_setopt(curl, CURLOPT_URL, url);
+	curl_easy_setopt(curl, CURLOPT_URL, http_data.url);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, http_data.method);
 	curl_easy_perform(curl);
-	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response);
 	curl_easy_cleanup(curl);
-	return (response_code);
+	return (response);
 }
 
-long	check_http_post(char *url)
-{
-	CURL	*curl;
-	long	response_code;
-
-	curl = curl_easy_init();
-
-	if (!curl)
-	{
-		fprintf(stderr, "ERROR: Failed to init curl\n");
-		exit(EXIT_FAILURE);
-	}
-	curl_easy_setopt(curl, CURLOPT_URL, url);
-	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "name=monitoring");
-	curl_easy_perform(curl);
-	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
-	printf("\n%ld\n", response_code);
-	curl_easy_cleanup(curl);
-	return (response_code);
-}
-
-void	write_http_log(char *name, long response, long expected,
-	char *filename, char *url)
+void	write_http_log(t_http_data http_data, char *log_filename)
 {
 	FILE	*file;
 	char	*time;
 
-	file = fopen(filename, "a");
+	file = fopen(log_filename, "a");
 	if (file == NULL)
 	{
-		fprintf(stderr, "ERROR: Could not open %s\n", filename);
+		fprintf(stderr, "ERROR: Could not open %s\n", log_filename);
 		exit(EXIT_FAILURE);
 	}
 	time = get_time();
-	fprintf(file, "%s|%s|HTTP|%s|GET|Response:%ld|Expected:%ld|",
-		time, name, url, response, expected);
-	if (response != expected)
+	fprintf(file, "%s|%s|HTTP|%s|%s|Response:%ld|Expected:%ld|",
+		time, http_data.name, http_data.url, http_data.method,
+		http_data.response, http_data.expected);
+	if (http_data.response != http_data.expected)
 		fprintf(file, "UNHEALTHY\n");
 	else
 		fprintf(file, "HEALTHY\n");

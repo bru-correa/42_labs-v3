@@ -12,13 +12,21 @@
 /********** MACROS **********/
 # define LOGFILE "monitoring.log"
 
+/********** STRUCTS **********/
+typedef struct s_http_data
+{
+	char	*name;
+	char	*url;
+	char	*method;
+	long	response;
+	long	expected;
+}	t_http_data;
+
 /********** PROTOTYPES **********/
 char	*get_time(void);
-long	check_http_get(char *url);
-long	check_http_post(char *url);
-void	write_http_log(char *name, long response, long expected,
-	char *filename, char *url);
+void	write_http_log(t_http_data http_data, char *log_filename);
 char	*set_url_prefix(char *url);
-void	test_http_req(char *name, char *url, char *method, long expected);
+void	test_http_req(t_http_data http_data, char *log_filename);
+long	check_http_request(t_http_data http_data);
 
 #endif

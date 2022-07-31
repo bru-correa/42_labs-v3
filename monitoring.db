@@ -3,3 +3,6 @@ intra	HTTP	intra.42.fr	GET		200	60
 game ping test	PING	game.42sp.org.br	120
 workspace monitoring	PING	workspaces.42sp.org.br	180
 google dns	DNS	google.com	180	8.8.8.8
+firefox put	HTTP	firefox.com	PUT	200	60
+poe delete	HTTP	pathofexile.com	DELETE	200	30
+google delete	HTTP	google.com	DELETE	405	30

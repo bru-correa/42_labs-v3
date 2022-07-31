@@ -12,12 +12,17 @@ CLEANING_MSG		= "$(RED)Cleaning up...$(NOCOLOR)"
 
 NAME				= monitoring
 CC					= gcc
-CFLAGS				= -Wall -Wextra -Werror $(LIBCURL) -I$(INCLUDE_DIR)
-LIBCURL				= -lcurl
+CFLAGS				= -Wall -Wextra -Werror $(CFLAGS_LIBS) -I$(INCLUDE_DIR)
+CFLAGS_LIBS			= $(CFLAGS_LIBFT) $(CFLAGS_LIBCURL)
+CFLAGS_LIBCURL		= -lcurl
+CFLAGS_LIBFT		= -lft -L $(LIBFT_DIR)
 
 INCLUDE_DIR			= include
 SRC_DIR				= src
 OBJ_DIR				= obj
+LIB_DIR				= lib
+
+LIBFT_DIR			= lib/libft
 
 SRC_FILES			= $(wildcard $(SRC_DIR)/*.c)
 OBJ_FILES			= $(patsubst %, $(OBJ_DIR)/%.o, \
@@ -26,7 +31,10 @@ MAIN				= $(NAME).c
 
 all:				$(NAME)
 
-required:			compile_message $(OBJ_DIR) $(OBJ_FILES)
+required:			compile_message $(OBJ_DIR) $(OBJ_FILES) libft
+
+libft:
+					$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME):			required
 					$(CC) -g $(MAIN) $(OBJ_FILES) $(CFLAGS) -o $(NAME)
@@ -55,4 +63,4 @@ compile_message:
 run:				all
 					./monitoring
 
-.PHONY:	all run clean fclean re run
+.PHONY:	all run clean fclean re run libft
