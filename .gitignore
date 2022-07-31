@@ -3,3 +3,4 @@ monitoring
 monitoring.log
 *.o
 *.a
+.vscode

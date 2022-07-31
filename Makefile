@@ -69,4 +69,8 @@ run:				all
 runv:				all
 					$(VALGRIND) ./monitoring
 
+debug:				required
+					@$(CC) -g $(MAIN) $(OBJ_FILES) $(CFLAGS) -o debug
+					echo $(DONE_MSG)
+
 .PHONY:	all run clean fclean re run libft

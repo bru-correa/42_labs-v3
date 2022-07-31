@@ -24,7 +24,6 @@ static void	set_url_prefix(char *url)
 	url = url_with_prefix;
 }
 
-// TODO Hide output in stdout
 static long	check_http_request(t_request *request)
 {
 	CURL	*curl;
@@ -42,6 +41,7 @@ static long	check_http_request(t_request *request)
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ignore_output);
 	curl_easy_perform(curl);
 	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+	curl_easy_getinfo(curl, CURLINFO_CONNECT_TIME, &(request->latency));
 	curl_easy_cleanup(curl);
 	return (response_code);
 }
@@ -53,9 +53,10 @@ static void	write_http_log(t_request *request, FILE *log_file)
 
 	time = get_time();
 	expected_code = ft_atoi(request->fields[HTTP_CODE]);
-	fprintf(log_file, "%s|%s|HTTP|%s|%s|Response:%ld|Expected:%ld|",
+	fprintf(log_file, "%s|%s|HTTP|%s|%s|Response:%ld|Expected:%ld|Latency:%f|",
 		time, request->fields[NAME], request->fields[URL],
-		request->fields[HTTP_METHOD], request->response_code, expected_code);
+		request->fields[HTTP_METHOD], request->response_code, expected_code,
+		request->latency);
 	if (request->response_code != expected_code)
 		fprintf(log_file, "UNHEALTHY\n");
 	else

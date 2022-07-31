@@ -12,7 +12,7 @@ int	main(void)
 	first_request = get_requests("monitoring.db");
 	log_file = open_log_file("monitoring.log");
 	request_http(first_request, log_file);
-	request_http(first_request->next, log_file);
+	lookup_dns(first_request->next, log_file);
 	stop_monitoring(first_request, log_file);
 	curl_global_cleanup();
 	return (0);

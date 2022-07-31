@@ -32,7 +32,7 @@ t_request	*get_requests(char *database_filename)
 	return (first_request);
 }
 
-// TODO Maybe create the interval counter here (need to analyze protocol)
+// TODO Create the interval counter here (need to analyze protocol)
 static t_request	*create_request(char **fields)
 {
 	t_request	*request;
