@@ -15,7 +15,7 @@ CC					= gcc
 CFLAGS				= -Wall -Wextra -Werror $(CFLAGS_LIBS) -I$(INCLUDE_DIR)
 CFLAGS_LIBS			= $(CFLAGS_LIBFT) $(CFLAGS_LIBCURL)
 CFLAGS_LIBCURL		= -lcurl
-CFLAGS_LIBFT		= -lft -L $(LIBFT_DIR)
+CFLAGS_LIBFT		= -lft -L $(LIBFT_DIR) -I $(LIBFT_DIR)
 
 INCLUDE_DIR			= include
 SRC_DIR				= src
