@@ -5,25 +5,25 @@ static void	del_newline(char **protocol);
 char	**get_next_protocol_data(int database_fd)
 {
 	char	*line;
-	char	**protocol;
+	char	**protocol_data;
 
 	line = ft_get_next_line(database_fd);
-	protocol = ft_split(line, '\t');
+	protocol_data = ft_split(line, '\t');
 	free(line);
-	if (protocol == NULL)
+	if (protocol_data == NULL)
 		return (NULL);
-	del_newline(protocol);
-	return (protocol);
+	del_newline(protocol_data);
+	return (protocol_data);
 }
 
-static void	del_newline(char **protocol)
+static void	del_newline(char **protocol_data)
 {
 	int		last_data_len;
 	int		data_index;
 
 	data_index = 0;
-	while (protocol[data_index + 1]!= NULL)
+	while (protocol_data[data_index + 1]!= NULL)
 		data_index++;
-	last_data_len = ft_strlen(protocol[data_index]);
-	protocol[data_index][last_data_len - 1] = '\0';
+	last_data_len = ft_strlen(protocol_data[data_index]);
+	protocol_data[data_index][last_data_len - 1] = '\0';
 }
