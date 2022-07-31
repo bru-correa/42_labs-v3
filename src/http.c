@@ -3,6 +3,8 @@
 static void	set_url_prefix(char *url);
 static long	check_http_request(t_request *request);
 static void	write_http_log(t_request *request, FILE *log_file);
+static size_t	ignore_output(void *buffer, size_t size, size_t nmemb,
+	void*userp);
 
 void	request_http(t_request *request, FILE *log_file)
 {
@@ -37,13 +39,13 @@ static long	check_http_request(t_request *request)
 	curl_easy_setopt(curl, CURLOPT_URL, request->fields[URL]);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, request->fields[HTTP_METHOD]);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ignore_output);
 	curl_easy_perform(curl);
 	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
 	curl_easy_cleanup(curl);
 	return (response_code);
 }
 
-// TODO Open the log file before creating the request list, pass the fd
 static void	write_http_log(t_request *request, FILE *log_file)
 {
 	char	*time;
@@ -58,4 +60,20 @@ static void	write_http_log(t_request *request, FILE *log_file)
 		fprintf(log_file, "UNHEALTHY\n");
 	else
 		fprintf(log_file, "HEALTHY\n");
+}
+
+/**
+ * @brief This function is used exclusively as a callback in CURLOPT_WRITEDATA
+ * to ignore the standard output from libcurl
+ * @param buffer The output it would print to standard output
+ * @param size Size is always 1
+ * @param nmemb The size of the data in 'buffer'
+ * @param userp Points to additional data retrieved by the callback
+*/
+static size_t	ignore_output(void *buffer, size_t size, size_t nmemb,
+	void*userp)
+{
+	buffer = buffer;
+	userp = userp;
+	return (size *nmemb);
 }
