@@ -10,5 +10,6 @@ char	*get_time(void)
 	time(&raw_time);
 	time_info = localtime(&raw_time);
 	time_str = asctime(time_info);
+	time_str[ft_strlen(time_str) - 1] = '\0';
 	return (time_str);
 }
