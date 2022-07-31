@@ -1,17 +1,16 @@
 #include "monitoring.h"
 
 static void	set_url_prefix(char *url);
-static long	check_http_request(t_http_data *http_data);
-static void	write_http_log(t_http_data *http_data, char *log_filename);
+static long	check_http_request(t_request *request);
+static void	write_http_log(t_request *request, FILE *log_file);
 
-void	test_http_req(t_http_data *http_data, char *log_filename)
+void	request_http(t_request *request, FILE *log_file)
 {
-	if (ft_strncmp(http_data->url, "http://", 7) == 0
-		|| ft_strncmp(http_data->url, "https://", 8) == 0)
-		set_url_prefix(http_data->url);
-	http_data->response = check_http_request(http_data);
-	write_http_log(http_data, log_filename);
-	free_http_data(http_data);
+	if (ft_strncmp(request->fields[URL], "http://", 7) == 0
+		|| ft_strncmp(request->fields[URL], "https://", 8) == 0)
+		set_url_prefix(request->fields[URL]);
+	request->response_code = check_http_request(request);
+	write_http_log(request, log_file);
 }
 
 static void	set_url_prefix(char *url)
@@ -24,10 +23,10 @@ static void	set_url_prefix(char *url)
 }
 
 // TODO Hide output in stdout
-static long	check_http_request(t_http_data *http_data)
+static long	check_http_request(t_request *request)
 {
 	CURL	*curl;
-	long	response;
+	long	response_code;
 
 	curl = curl_easy_init();
 	if (!curl)
@@ -35,34 +34,28 @@ static long	check_http_request(t_http_data *http_data)
 		fprintf(stderr, "ERROR: Failed to init curl\n");
 		exit(EXIT_FAILURE);
 	}
-	curl_easy_setopt(curl, CURLOPT_URL, http_data->url);
+	curl_easy_setopt(curl, CURLOPT_URL, request->fields[URL]);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, http_data->method);
+	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, request->fields[HTTP_METHOD]);
 	curl_easy_perform(curl);
-	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response);
+	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
 	curl_easy_cleanup(curl);
-	return (response);
+	return (response_code);
 }
 
-static void	write_http_log(t_http_data *http_data, char *log_filename)
+// TODO Open the log file before creating the request list, pass the fd
+static void	write_http_log(t_request *request, FILE *log_file)
 {
-	FILE	*file;
 	char	*time;
+	long	expected_code;
 
-	file = fopen(log_filename, "a");
-	if (file == NULL)
-	{
-		fprintf(stderr, "ERROR: Could not open %s\n", log_filename);
-		free_http_data(http_data);
-		exit(EXIT_FAILURE);
-	}
 	time = get_time();
-	fprintf(file, "%s|%s|HTTP|%s|%s|Response:%ld|Expected:%ld|",
-		time, http_data->name, http_data->url, http_data->method,
-		http_data->response, http_data->expected);
-	if (http_data->response != http_data->expected)
-		fprintf(file, "UNHEALTHY\n");
+	expected_code = ft_atoi(request->fields[HTTP_CODE]);
+	fprintf(log_file, "%s|%s|HTTP|%s|%s|Response:%ld|Expected:%ld|",
+		time, request->fields[NAME], request->fields[URL],
+		request->fields[HTTP_METHOD], request->response_code, expected_code);
+	if (request->response_code != expected_code)
+		fprintf(log_file, "UNHEALTHY\n");
 	else
-		fprintf(file, "HEALTHY\n");
-	fclose(file);
+		fprintf(log_file, "HEALTHY\n");
 }

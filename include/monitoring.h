@@ -15,7 +15,7 @@
 # define LOGFILE "monitoring.log"
 # define NAME 0
 # define PROTOCOL 1
-# define ADDRESS 2
+# define URL 2
 # define HTTP_METHOD 3
 # define HTTP_CODE 4
 # define HTTP_INTERVAL 5
@@ -24,27 +24,20 @@
 # define DNS_SERVER 4
 
 /********** STRUCTS **********/
-typedef struct s_http_data
+typedef struct s_request
 {
-	char	*name;
-	char	*url;
-	char	*method;
-	long	response;
-	long	expected;
-}	t_http_data;
-
-typedef struct s_protocol
-{
-	char	**data;
+	char	**fields;
 	int		interval_counter;
+	long	response_code;
 	void	*next;
-}	t_protocol;
+}	t_request;
 
 /********** PROTOTYPES **********/
-char	*get_time(void);
-void	test_http_req(t_http_data *http_data, char *log_filename);
-void	free_http_data(t_http_data *http_data);
-char	**get_next_protocol_data(int fd);
-t_protocol	*get_protocols(int database_fd);
+char		*get_time(void);
+void		request_http(t_request *request, FILE *log_file);
+char		**get_next_fields(int database_fd);
+t_request	*get_requests(char *database_filename);
+void		stop_monitoring(t_request *first_request, FILE *log_file);
+void		free_requests(t_request *first_request);
 
 #endif
