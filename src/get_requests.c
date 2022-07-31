@@ -1,10 +1,10 @@
 #include "monitoring.h"
 
+static t_request	*get_first_request(int *database_fd);
 static t_request	*create_request(char **fields);
 static void			push_request(t_request *first, t_request *new);
 static int			open_database_file(char *filename);
 
-// ? Maybe extract this function
 t_request	*get_requests(char *database_filename)
 {
 	char		**fields;
@@ -13,14 +13,7 @@ t_request	*get_requests(char *database_filename)
 	int			database_fd;
 
 	database_fd = open_database_file(database_filename);
-	fields = get_next_fields(database_fd);
-	if (fields == NULL)
-	{
-		fprintf(stderr, "ERROR: Empty database\n");
-		close(database_fd);
-		exit(EXIT_FAILURE);
-	}
-	first_request = create_request(fields);
+	first_request = get_first_request(database_fd);
 	fields = get_next_fields(database_fd);
 	while (fields != NULL)
 	{
@@ -32,7 +25,22 @@ t_request	*get_requests(char *database_filename)
 	return (first_request);
 }
 
-// TODO Create the interval counter here (need to analyze protocol)
+static t_request	*get_first_request(int *database_fd)
+{
+	char		**fields;
+	t_request	*request;
+
+	fields = get_next_fields(database_fd);
+	if (fields == NULL)
+	{
+		fprintf(stderr, "ERROR: Empty database\n");
+		close(database_fd);
+		exit(EXIT_FAILURE);
+	}
+	request = create_request(fields);
+	return (request);
+}
+
 static t_request	*create_request(char **fields)
 {
 	t_request	*request;
@@ -42,6 +50,7 @@ static t_request	*create_request(char **fields)
 		return (NULL);
 	request->fields = fields;
 	request->next = NULL;
+	request->interval_counter = 0;
 	return (request);
 }
 
