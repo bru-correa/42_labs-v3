@@ -44,7 +44,11 @@ int	check_dns_timeout(int data_file)
 		line = ft_get_next_line(data_file);
 	}
 	if (ft_strncmp(line, ";; connection timeout;", 22) == 0)
+	{
+		free(line);
 		return (TRUE);
+	}
+	free(line);
 	return (FALSE);
 }
 
