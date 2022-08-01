@@ -50,6 +50,7 @@ static long	check_http_request(t_request *request)
 	return (response_code);
 }
 
+// TODO Latency is going to be TIMEOUT when the request fails
 static void	write_http_log(t_request *request, FILE *log_file)
 {
 	char	*time;

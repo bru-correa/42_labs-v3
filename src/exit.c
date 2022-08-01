@@ -1,7 +1,5 @@
 #include "monitoring.h"
 
-static void	free_fields(char **fields);
-
 void	stop_monitoring(t_request *first_request, FILE *log_file)
 {
 	fclose(log_file);
@@ -18,12 +16,12 @@ void	free_requests(t_request *first_request)
 	{
 		previous_request = current_request;
 		current_request = current_request->next;
-		free_fields(previous_request->fields);
+		free_matrix(previous_request->fields);
 		free(previous_request);
 	}
 }
 
-static void	free_fields(char **fields)
+void	free_matrix(char **fields)
 {
 	int	i;
 

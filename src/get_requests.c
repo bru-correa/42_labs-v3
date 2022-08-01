@@ -1,6 +1,6 @@
 #include "monitoring.h"
 
-static t_request	*get_first_request(int *database_fd);
+static t_request	*get_first_request(int database_fd);
 static t_request	*create_request(char **fields);
 static void			push_request(t_request *first, t_request *new);
 static int			open_database_file(char *filename);
@@ -25,7 +25,7 @@ t_request	*get_requests(char *database_filename)
 	return (first_request);
 }
 
-static t_request	*get_first_request(int *database_fd)
+static t_request	*get_first_request(int database_fd)
 {
 	char		**fields;
 	t_request	*request;

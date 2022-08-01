@@ -4,3 +4,4 @@ monitoring.log
 *.o
 *.a
 .vscode
+debug
