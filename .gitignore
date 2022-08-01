@@ -4,4 +4,5 @@ monitoring.log
 *.o
 *.a
 .vscode
+settings.json
 debug

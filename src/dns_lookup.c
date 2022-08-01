@@ -50,7 +50,7 @@ static void	write_log_timeout(t_request *request, FILE *log_file, int data_file)
 	close(data_file);
 }
 
-// ! Always get the latency after the response
+// ! Always get the latency after the response(DOC)
 static void write_log(t_request *request, FILE *log_file, int data_file)
 {
 	char	*time;
