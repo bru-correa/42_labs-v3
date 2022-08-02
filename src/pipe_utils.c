@@ -15,13 +15,6 @@ void	pipe_and_fork(int *pipe_fd, pid_t *pid)
 	}
 }
 
-void	redir_pipe_to_stdin(int *pipe_fd)
-{
-	dup2(pipe_fd[READ_END], STDIN_FILENO);
-	close(pipe_fd[READ_END]);
-	close(pipe_fd[WRITE_END]);
-}
-
 void	redir_pipe_to_stdout(int *pipe_fd)
 {
 	dup2(pipe_fd[WRITE_END], STDOUT_FILENO);

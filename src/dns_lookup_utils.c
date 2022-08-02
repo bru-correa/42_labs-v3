@@ -13,6 +13,7 @@ char	*get_dns_response(int data_file)
 	return (response);
 }
 
+// TODO Change data_chunks name
 int	get_dns_latency(int data_file)
 {
 	char	*line;

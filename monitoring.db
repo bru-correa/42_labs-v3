@@ -1,7 +1,8 @@
-google	HTTP	google.com	POST	405	60
+game ping test	PING	game.42sp.org.br	120
+fail ping test	PING	game.44sp.org.br	60
+wrong address	HTTP	ghjasdhfsd.com	POST	405	60
 google dns	DNS	google.com	180	8.8.8.8
 intra	HTTP	intra.42.fr	GET		200	60
-game ping test	PING	game.42sp.org.br	120
 workspace monitoring	PING	workspaces.42sp.org.br	180
 firefox put	HTTP	firefox.com	PUT	200	60
 poe delete	HTTP	pathofexile.com	DELETE	200	30

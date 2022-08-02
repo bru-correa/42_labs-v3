@@ -21,15 +21,15 @@ void	free_requests(t_request *first_request)
 	}
 }
 
-void	free_matrix(char **fields)
+void	free_matrix(char **matrix)
 {
 	int	i;
 
 	i = 0;
-	while (fields[i] != NULL)
+	while (matrix[i] != NULL)
 	{
-		free(fields[i]);
+		free(matrix[i]);
 		i++;
 	}
-	free(fields);
+	free(matrix);
 }

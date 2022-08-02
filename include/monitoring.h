@@ -43,14 +43,16 @@ void		request_http(t_request *request, FILE *log_file);
 char		**get_next_fields(int database_fd);
 t_request	*get_requests(char *database_filename);
 void		stop_monitoring(t_request *first_request, FILE *log_file);
-void		free_matrix(char **fields);
+void		free_matrix(char **matrix);
 void		free_requests(t_request *first_request);
 void		lookup_dns(t_request *request, FILE *log_file);
 void		pipe_and_fork(int *pipe_fd, pid_t *pid);
 void		redir_pipe_to_stdout(int *pipe_fd);
-void		redir_pipe_to_stdin(int *pipe_fd);
 char		*get_dns_response(int data_file);
 int			get_dns_latency(int data_file);
 int			check_dns_timeout(int data_file);
+void		request_ping(t_request *request, FILE *log_file);
+int			check_ping_timeout(int data_file);
+char		*get_ping_latency(int data_file);
 
 #endif
