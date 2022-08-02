@@ -5,37 +5,7 @@ static void	print_in_blue(char *message);
 static void	print_in_red(char *message);
 static void	print_in_green(char *message);
 
-void	print_simple_http(t_request *request, char *time, int is_healthy)
-{
-	print_simple_head(request, time);
-	print_in_blue("Latency:");
-	if (request->latency == 0)
-		print_in_red("TIMEOUT");
-	else
-		printf("%.1f ms\n", request->latency * 1000);
-	print_in_blue("Status:");
-	if (is_healthy == TRUE)
-		print_in_green("HEALTHY");
-	else
-		print_in_red("UNHEALTHY");
-}
-
-void	print_simple_dns(t_request *request, char *time, int is_healthy)
-{
-	print_simple_head(request, time);
-	print_in_blue("Latency:");
-	if (request->latency == 0)
-		print_in_red("TIMEOUT");
-	else
-		printf("%.1f ms\n", request->latency);
-	print_in_blue("Status:");
-	if (is_healthy == TRUE)
-		print_in_green("HEALTHY");
-	else
-		print_in_red("UNHEALTHY");
-}
-
-void	print_simple_ping(t_request *request, char *time, int is_healthy)
+void	print_simple(t_request *request, char *time, int is_healthy)
 {
 	print_simple_head(request, time);
 	print_in_blue("Latency:");

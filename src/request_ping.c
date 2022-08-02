@@ -43,12 +43,12 @@ static void	write_ping_log(t_request *request, FILE *log_file, int data_file)
 	{
 		fprintf(log_file, "TIMEOUT|");
 		fprintf(log_file, "Status: UNHEALTHY\n");
-		print_simple_ping(request, time, FALSE);
+		print_simple(request, time, FALSE);
 	}
 	else
 	{
 		fprintf(log_file, "%.1f|", request->latency);
 		fprintf(log_file, "Status: HEALTHY\n");
-		print_simple_ping(request, time, TRUE);
+		print_simple(request, time, TRUE);
 	}
 }

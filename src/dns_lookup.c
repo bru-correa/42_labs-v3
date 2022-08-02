@@ -51,12 +51,12 @@ static void	write_dns_log(t_request *request, FILE *log_file, int data_file)
 	if (ft_strncmp(response, "NOERROR", 8) == 0)
 	{
 		fprintf(log_file, "HEALTHY\n");
-		print_simple_dns(request, time, TRUE);
+		print_simple(request, time, TRUE);
 	}
 	else
 	{
 		fprintf(log_file, "UNHEALTHY\n");
-		print_simple_dns(request, time, FALSE);
+		print_simple(request, time, FALSE);
 	}
 	free(response);
 }

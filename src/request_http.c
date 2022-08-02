@@ -56,6 +56,7 @@ static void	write_http_log(t_request *request, FILE *log_file)
 	long	expected_code;
 
 	time = get_time();
+	request->latency *= 1000;
 	expected_code = ft_atoi(request->fields[HTTP_CODE]);
 	fprintf(log_file,
 		"%s|%s|HTTP|%s|%s|Response: %ld|Expected: %s|",
@@ -65,16 +66,16 @@ static void	write_http_log(t_request *request, FILE *log_file)
 	if (request->response_code == 0)
 		fprintf(log_file, "Latency: TIMEOUT|");
 	else
-		fprintf(log_file, "Latency: %.1f ms|", request->latency * 1000);
+		fprintf(log_file, "Latency: %.1f ms|", request->latency);
 	if (request->response_code != expected_code)
 	{
 		fprintf(log_file, "Status: UNHEALTHY\n");
-		print_simple_http(request, time, FALSE);
+		print_simple(request, time, FALSE);
 	}
 	else
 	{
 		fprintf(log_file, "Status: HEALTHY\n");
-		print_simple_http(request, time, TRUE);
+		print_simple(request, time, TRUE);
 	}
 }
 

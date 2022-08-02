@@ -52,8 +52,6 @@ char		*get_dns_response(t_request *request, int data_file);
 void		request_ping(t_request *request, FILE *log_file);
 double		get_ping_latency(int data_file);
 void		start_monitoring(t_request *first_request, FILE *log_file);
-void		print_simple_http(t_request *request, char *time, int is_healthy);
-void		print_simple_dns(t_request *request, char *time, int is_healthy);
-void		print_simple_ping(t_request *request, char *time, int is_healthy);
+void		print_simple(t_request *request, char *time, int is_healthy);
 
 #endif
