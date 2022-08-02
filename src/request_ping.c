@@ -1,26 +1,16 @@
 #include "monitoring.h"
 
 static void	exec_ping(t_request *request, pid_t pid, int *pipe_fd);
-static void	write_log(t_request *request, FILE *log_file, char *latency);
-static void	write_log_timeout(t_request *request, FILE *log_file);
+static void	write_ping_log(t_request *request, FILE *log_file, int data_file);
 
 void	request_ping(t_request *request, FILE *log_file)
 {
-	int		timeout;
-	char	*latency;
 	pid_t	pid;
 	int		pipe_fd[2];
 
 	pipe_and_fork(pipe_fd, &pid);
 	exec_ping(request, pid, pipe_fd);
-	timeout = check_ping_timeout(pipe_fd[READ_END]);
-	if (timeout == TRUE)
-		write_log_timeout(request, log_file);
-	else
-	{
-		latency = get_ping_latency(pipe_fd[READ_END]);
-		write_log(request, log_file, latency);
-	}
+	write_ping_log(request, log_file, pipe_fd[READ_END]);
 	close(pipe_fd[READ_END]);
 }
 
@@ -40,21 +30,25 @@ static void	exec_ping(t_request *request, pid_t pid, int *pipe_fd)
 	}
 }
 
-static void	write_log(t_request *request, FILE *log_file, char *latency)
+static void	write_ping_log(t_request *request, FILE *log_file, int data_file)
 {
 	char	*time;
 
 	time = get_time();
-	fprintf(log_file, "%s|%s|PING|Url: %s|Latency %s|Status: HEALTHY\n",
-		time, request->fields[NAME], request->fields[URL], latency);
-	free(latency);
-}
-
-static void	write_log_timeout(t_request *request, FILE *log_file)
-{
-	char	*time;
-
-	time = get_time();
-	fprintf(log_file, "%s|%s|PING|Url: %s|Latency: TIMEOUT|Status: UNHEALTHY\n",
+	request->latency = get_ping_latency(data_file);
+	fprintf(log_file, "%s|%s|PING|Url: %s|",
 		time, request->fields[NAME], request->fields[URL]);
+	fprintf(log_file, "Latency: ");
+	if (request->latency == 0)
+	{
+		fprintf(log_file, "TIMEOUT|");
+		fprintf(log_file, "Status: UNHEALTHY\n");
+		print_simple_ping(request, time, FALSE);
+	}
+	else
+	{
+		fprintf(log_file, "%.1f|", request->latency);
+		fprintf(log_file, "Status: HEALTHY\n");
+		print_simple_ping(request, time, TRUE);
+	}
 }

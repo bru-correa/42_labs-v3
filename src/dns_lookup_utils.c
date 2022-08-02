@@ -38,7 +38,7 @@ static double	get_dns_latency(int data_file)
 	}
 	line_data = ft_split(line, ' ');
 	free(line);
-	latency = ft_atoi(line_data[3]);
+	latency = atof(line_data[3]);
 	free_matrix(line_data);
 	return (latency);
 }
