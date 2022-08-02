@@ -16,7 +16,6 @@ void	start_monitoring(t_request *first_request, FILE *log_file)
 		gettimeofday(&end_time, NULL);
 		time_spent = end_time.tv_sec - start_time.tv_sec;
 		sleep(60 - time_spent);
-		printf("Wokege\n");
 	}
 }
 
@@ -36,7 +35,6 @@ static void	update_requests(t_request *first_request, FILE *log_file)
 
 static void	call_request(t_request *request, FILE *log_file)
 {
-	printf("Called Request: %s\n", request->fields[NAME]);
 	if (ft_strncmp(request->fields[PROTOCOL], "HTTP", 5) == 0)
 	{
 		request_http(request, log_file);

@@ -14,10 +14,10 @@ char	*get_dns_response(int data_file)
 }
 
 // TODO Change data_chunks name
-int	get_dns_latency(int data_file)
+double	get_dns_latency(int data_file)
 {
 	char	*line;
-	int		latency;
+	double	latency;
 	char	**data_chunks;
 
 	line = ft_get_next_line(data_file);

@@ -55,15 +55,14 @@ static void write_log(t_request *request, FILE *log_file, int data_file)
 {
 	char	*time;
 	char	*response;
-	int		latency;
 
 	time = get_time();
 	response = get_dns_response(data_file);
-	latency = get_dns_latency(data_file);
+	request->latency = get_dns_latency(data_file);
 	fprintf(log_file, "%s|%s|DNS|Url: %s|DNS_Server: %s|Response: %s|",
 		time, request->fields[NAME], request->fields[URL],
 		request->fields[DNS_SERVER], response);
-	fprintf(log_file, "Latency: %d ms|Status: ", latency);
+	fprintf(log_file, "Latency: %.1f ms|Status: ", request->latency);
 	if (ft_strncmp(response, "NOERROR", 8) == 0)
 		fprintf(log_file, "HEALTHY\n");
 	else

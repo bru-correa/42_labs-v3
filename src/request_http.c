@@ -62,14 +62,20 @@ static void	write_http_log(t_request *request, FILE *log_file)
 		time, request->fields[NAME], request->fields[URL],
 		request->fields[HTTP_METHOD], request->response_code,
 		request->fields[HTTP_CODE]);
-	if (request->response_code == 0L)
+	if (request->response_code == 0)
 		fprintf(log_file, "Latency: TIMEOUT|");
 	else
 		fprintf(log_file, "Latency: %.1f ms|", request->latency * 1000);
 	if (request->response_code != expected_code)
+	{
 		fprintf(log_file, "Status: UNHEALTHY\n");
+		print_simple_http(request, time, FALSE);
+	}
 	else
+	{
 		fprintf(log_file, "Status: HEALTHY\n");
+		print_simple_http(request, time, TRUE);
+	}
 }
 
 /**
