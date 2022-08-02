@@ -35,20 +35,19 @@ static void	write_ping_log(t_request *request, FILE *log_file, int data_file)
 	char	*time;
 
 	time = get_time();
+	write_log_head(request, log_file, "PING");
 	request->latency = get_ping_latency(data_file);
-	fprintf(log_file, "%s|%s|PING|Url: %s|",
-		time, request->fields[NAME], request->fields[URL]);
-	fprintf(log_file, "Latency: ");
 	if (request->latency == 0)
 	{
 		fprintf(log_file, "TIMEOUT|");
-		fprintf(log_file, "Status: UNHEALTHY\n");
+		fprintf(log_file, "UNHEALTHY\n");
 		print_simple(request, time, FALSE);
 	}
 	else
 	{
 		fprintf(log_file, "%.1f|", request->latency);
-		fprintf(log_file, "Status: HEALTHY\n");
+		fprintf(log_file, "HEALTHY\n");
 		print_simple(request, time, TRUE);
 	}
+	fflush(log_file);
 }

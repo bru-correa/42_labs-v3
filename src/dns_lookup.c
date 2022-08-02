@@ -32,18 +32,15 @@ static void	exec_dns_lookup(t_request *request, pid_t pid, int *pipe_fd)
 	}
 }
 
-// TODO Maybe write a function with a common log start for every protocol
 static void	write_dns_log(t_request *request, FILE *log_file, int data_file)
 {
 	char	*time;
 	char	*response;
 
 	time = get_time();
+	write_log_head(request, log_file, "DNS");
 	response = get_dns_response(request, data_file);
-	fprintf(log_file, "%s|%s|DNS|Url: %s|DNS_Server: %s|Response: %s|",
-		time, request->fields[NAME], request->fields[URL],
-		request->fields[DNS_SERVER], response);
-	fprintf(log_file, "Latency: ");
+	fprintf(log_file, "%s|%s", request->fields[DNS_SERVER], response);
 	if (request->latency == 0)
 		fprintf(log_file, "TIMEOUT|");
 	else
@@ -59,4 +56,5 @@ static void	write_dns_log(t_request *request, FILE *log_file, int data_file)
 		print_simple(request, time, FALSE);
 	}
 	free(response);
+	fflush(log_file);
 }

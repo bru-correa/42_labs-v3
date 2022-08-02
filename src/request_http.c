@@ -28,6 +28,7 @@ static void	set_url_prefix(char *url)
 	url = url_with_prefix;
 }
 
+// TODO Maybe change name to setup_http_request
 static long	check_http_request(t_request *request)
 {
 	CURL	*curl;
@@ -50,23 +51,22 @@ static long	check_http_request(t_request *request)
 	return (response_code);
 }
 
+// TODO Extract this function
 static void	write_http_log(t_request *request, FILE *log_file)
 {
 	char	*time;
 	long	expected_code;
 
 	time = get_time();
+	write_log_head(request, log_file, "HTTP");
 	request->latency *= 1000;
 	expected_code = ft_atoi(request->fields[HTTP_CODE]);
-	fprintf(log_file,
-		"%s|%s|HTTP|%s|%s|Response: %ld|Expected: %s|",
-		time, request->fields[NAME], request->fields[URL],
-		request->fields[HTTP_METHOD], request->response_code,
-		request->fields[HTTP_CODE]);
+	fprintf(log_file, "%s|%ld|%s|", request->fields[HTTP_METHOD],
+		request->response_code, request->fields[HTTP_CODE]);
 	if (request->response_code == 0)
-		fprintf(log_file, "Latency: TIMEOUT|");
+		fprintf(log_file, "TIMEOUT|");
 	else
-		fprintf(log_file, "Latency: %.1f ms|", request->latency);
+		fprintf(log_file, "%.1f ms|", request->latency);
 	if (request->response_code != expected_code)
 	{
 		fprintf(log_file, "Status: UNHEALTHY\n");
@@ -77,6 +77,7 @@ static void	write_http_log(t_request *request, FILE *log_file)
 		fprintf(log_file, "Status: HEALTHY\n");
 		print_simple(request, time, TRUE);
 	}
+	fflush(log_file);
 }
 
 /**

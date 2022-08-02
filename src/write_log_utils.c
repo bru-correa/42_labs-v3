@@ -1,9 +1,8 @@
 #include "monitoring.h"
 
-void	write_log_head(t_request *request, FILE *log_file, char *protocol)
+void	write_log_head(t_request *request, FILE *log_file, char *time)
 {
-	char	*time;
-
-	fprintf(log_file, "%s|%s|%s|%s",
-		time, request->fields[NAME], protocol, request->fields[URL]);
+	fprintf(log_file, "%s|%s|%s|%s|",
+		time, request->fields[NAME], request->fields[PROTOCOL],
+		request->fields[URL]);
 }
