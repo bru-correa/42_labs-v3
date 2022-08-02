@@ -48,13 +48,12 @@ void		free_requests(t_request *first_request);
 void		lookup_dns(t_request *request, FILE *log_file);
 void		pipe_and_fork(int *pipe_fd, pid_t *pid);
 void		redir_pipe_to_stdout(int *pipe_fd);
-char		*get_dns_response(int data_file);
-double		get_dns_latency(int data_file);
-int			check_dns_timeout(int data_file);
+char		*get_dns_response(t_request *request, int data_file);
 void		request_ping(t_request *request, FILE *log_file);
 int			check_ping_timeout(int data_file);
 char		*get_ping_latency(int data_file);
 void		start_monitoring(t_request *first_request, FILE *log_file);
-void	print_simple_http(t_request *request, char *time, int is_healthy);
+void		print_simple_http(t_request *request, char *time, int is_healthy);
+void		print_simple_dns(t_request *request, char *time, int is_healthy);
 
 #endif
