@@ -54,5 +54,6 @@ int			check_dns_timeout(int data_file);
 void		request_ping(t_request *request, FILE *log_file);
 int			check_ping_timeout(int data_file);
 char		*get_ping_latency(int data_file);
+void		start_monitoring(t_request *first_request, FILE *log_file);
 
 #endif
