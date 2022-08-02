@@ -53,5 +53,6 @@ void		request_ping(t_request *request, FILE *log_file);
 double		get_ping_latency(int data_file);
 void		start_monitoring(t_request *first_request, FILE *log_file);
 void		print_simple(t_request *request, char *time, int is_healthy);
+void		write_log_head(t_request *request, FILE *log_file, char *protocol);
 
 #endif
