@@ -58,7 +58,7 @@ static void	write_http_log(t_request *request, FILE *log_file)
 	long	expected_code;
 
 	time = get_time();
-	write_log_head(request, log_file, "HTTP");
+	write_log_head(request, log_file, time);
 	request->latency *= 1000;
 	expected_code = ft_atoi(request->fields[HTTP_CODE]);
 	fprintf(log_file, "%s|%ld|%s|", request->fields[HTTP_METHOD],
@@ -69,12 +69,12 @@ static void	write_http_log(t_request *request, FILE *log_file)
 		fprintf(log_file, "%.1f ms|", request->latency);
 	if (request->response_code != expected_code)
 	{
-		fprintf(log_file, "Status: UNHEALTHY\n");
+		fprintf(log_file, "UNHEALTHY\n");
 		print_simple(request, time, FALSE);
 	}
 	else
 	{
-		fprintf(log_file, "Status: HEALTHY\n");
+		fprintf(log_file, "HEALTHY\n");
 		print_simple(request, time, TRUE);
 	}
 	fflush(log_file);

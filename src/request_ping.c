@@ -35,7 +35,7 @@ static void	write_ping_log(t_request *request, FILE *log_file, int data_file)
 	char	*time;
 
 	time = get_time();
-	write_log_head(request, log_file, "PING");
+	write_log_head(request, log_file, time);
 	request->latency = get_ping_latency(data_file);
 	if (request->latency == 0)
 	{
@@ -45,7 +45,7 @@ static void	write_ping_log(t_request *request, FILE *log_file, int data_file)
 	}
 	else
 	{
-		fprintf(log_file, "%.1f|", request->latency);
+		fprintf(log_file, "%.1f ms|", request->latency);
 		fprintf(log_file, "HEALTHY\n");
 		print_simple(request, time, TRUE);
 	}

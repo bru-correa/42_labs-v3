@@ -27,6 +27,17 @@
 # define READ_END 0
 # define WRITE_END 1
 
+# define LOG_DATE 0
+# define LOG_NAME 1
+# define LOG_PROTOCOL 2
+# define LOG_URL 3
+# define LOG_HTTP_LATENCY 7
+# define LOG_HTTP_STATUS 8
+# define LOG_DNS_LATENCY 6
+# define LOG_DNS_STATUS 7
+# define LOG_PING_LATENCY 4
+# define LOG_PING_STATUS 5
+
 /********** STRUCTS **********/
 typedef struct s_request
 {
@@ -54,5 +65,9 @@ double		get_ping_latency(int data_file);
 void		start_monitoring(t_request *first_request, FILE *log_file);
 void		print_simple(t_request *request, char *time, int is_healthy);
 void		write_log_head(t_request *request, FILE *log_file, char *time);
+void		read_simple(int log_fd);
+void		print_in_blue(char *message);
+void		print_in_red(char *message);
+void		print_in_green(char *message);
 
 #endif

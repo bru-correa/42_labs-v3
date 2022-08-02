@@ -38,13 +38,13 @@ static void	write_dns_log(t_request *request, FILE *log_file, int data_file)
 	char	*response;
 
 	time = get_time();
-	write_log_head(request, log_file, "DNS");
+	write_log_head(request, log_file, time);
 	response = get_dns_response(request, data_file);
-	fprintf(log_file, "%s|%s", request->fields[DNS_SERVER], response);
+	fprintf(log_file, "%s|%s|", request->fields[DNS_SERVER], response);
 	if (request->latency == 0)
 		fprintf(log_file, "TIMEOUT|");
 	else
-		fprintf(log_file, "%.1f|", request->latency);
+		fprintf(log_file, "%.1f ms|", request->latency);
 	if (ft_strncmp(response, "NOERROR", 8) == 0)
 	{
 		fprintf(log_file, "HEALTHY\n");
