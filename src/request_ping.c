@@ -31,22 +31,20 @@ static void	exec_ping(t_request *request, pid_t pid, int *pipe_fd)
 
 static void	write_ping_log(t_request *request, FILE *log_file, int data_file)
 {
-	char	*time;
-
-	time = get_time();
-	write_log_head(request, log_file, time);
+	request->date = get_date();
+	write_log_head(request, log_file);
 	request->latency = get_ping_latency(data_file);
 	if (request->latency == 0)
 	{
 		fprintf(log_file, "TIMEOUT|");
 		fprintf(log_file, "UNHEALTHY\n");
-		print_simple(request, time, FALSE);
+		print_simple(request, FALSE);
 	}
 	else
 	{
 		fprintf(log_file, "%.1f ms|", request->latency);
 		fprintf(log_file, "HEALTHY\n");
-		print_simple(request, time, TRUE);
+		print_simple(request, TRUE);
 	}
 	fflush(log_file);
 }

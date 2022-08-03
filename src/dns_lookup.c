@@ -2,6 +2,8 @@
 
 static void	exec_dns_lookup(t_request *request, pid_t pid, int *pipe_fd);
 static void	write_dns_log(t_request *request, FILE *log_file, int data_file);
+static void	write_dns_log_status(t_request *request, FILE *log_file,
+	char *response);
 
 void	lookup_dns(t_request *request, FILE *log_file)
 {
@@ -34,27 +36,32 @@ static void	exec_dns_lookup(t_request *request, pid_t pid, int *pipe_fd)
 
 static void	write_dns_log(t_request *request, FILE *log_file, int data_file)
 {
-	char	*time;
 	char	*response;
 
-	time = get_time();
-	write_log_head(request, log_file, time);
+	request->date = get_date();
+	write_log_head(request, log_file);
 	response = get_dns_response(request, data_file);
 	fprintf(log_file, "%s|%s|", request->fields[DNS_SERVER], response);
 	if (request->latency == 0)
 		fprintf(log_file, "TIMEOUT|");
 	else
 		fprintf(log_file, "%.1f ms|", request->latency);
+	write_dns_log_status(request, log_file, response);
+	free(response);
+	fflush(log_file);
+}
+
+static void	write_dns_log_status(t_request *request, FILE *log_file,
+	char *response)
+{
 	if (ft_strncmp(response, "NOERROR", 8) == 0)
 	{
 		fprintf(log_file, "HEALTHY\n");
-		print_simple(request, time, TRUE);
+		print_simple(request, TRUE);
 	}
 	else
 	{
 		fprintf(log_file, "UNHEALTHY\n");
-		print_simple(request, time, FALSE);
+		print_simple(request, FALSE);
 	}
-	free(response);
-	fflush(log_file);
 }

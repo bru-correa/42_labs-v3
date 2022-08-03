@@ -43,9 +43,10 @@
 typedef struct s_request
 {
 	char	**fields;
-	int		interval_counter;
 	long	response_code;
 	double	latency;
+	char	*date;
+	int		interval_counter;
 	void	*next;
 }	t_request;
 
@@ -59,7 +60,7 @@ typedef struct s_overview
 
 /********** PROTOTYPES **********/
 void		read_args(int argc, char *argv[]);
-char		*get_time(void);
+char		*get_date(void);
 void		request_http(t_request *request, FILE *log_file);
 char		**get_next_fields(int database_fd);
 t_request	*get_requests(char *database_filename);
@@ -73,8 +74,8 @@ char		*get_dns_response(t_request *request, int data_file);
 void		request_ping(t_request *request, FILE *log_file);
 double		get_ping_latency(int data_file);
 void		start_monitoring(t_request *first_request, FILE *log_file);
-void		write_log_head(t_request *request, FILE *log_file, char *time);
-void		print_simple(t_request *request, char *time, int is_healthy);
+void		write_log_head(t_request *request, FILE *log_file);
+void		print_simple(t_request *request, int is_healthy);
 void		read_simple(void);
 void		print_overviews(void);
 void		print_in_blue(char *message);

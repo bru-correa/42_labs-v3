@@ -1,10 +1,10 @@
 #include "monitoring.h"
 
-static void	print_simple_head(t_request *request, char *time);
+static void	print_simple_head(t_request *request);
 
-void	print_simple(t_request *request, char *time, int is_healthy)
+void	print_simple(t_request *request, int is_healthy)
 {
-	print_simple_head(request, time);
+	print_simple_head(request);
 	print_in_blue("Latency:");
 	if (request->latency == 0)
 		print_in_red("TIMEOUT");
@@ -17,7 +17,7 @@ void	print_simple(t_request *request, char *time, int is_healthy)
 		print_in_red("UNHEALTHY");
 }
 
-static void	print_simple_head(t_request *request, char *time)
+static void	print_simple_head(t_request *request)
 {
 	print_divider();
 	print_in_blue("Name:");
@@ -27,5 +27,5 @@ static void	print_simple_head(t_request *request, char *time)
 	print_in_blue("Protocol:");
 	printf("%s\n", request->fields[PROTOCOL]);
 	print_in_blue("Date:");
-	printf("%s\n", time);
+	printf("%s\n", request->date);
 }

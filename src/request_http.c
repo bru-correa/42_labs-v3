@@ -3,8 +3,7 @@
 static CURL	*setup_curl(t_request *request);
 static void	perform_http_request(CURL *curl, t_request *request);
 static void	write_http_log(t_request *request, FILE *log_file);
-static void	write_http_log_status(t_request *request, FILE *log_file,
-	char *time);
+static void	write_http_log_status(t_request *request, FILE *log_file);
 
 void	request_http(t_request *request, FILE *log_file)
 {
@@ -46,22 +45,19 @@ static void	perform_http_request(CURL *curl, t_request *request)
 
 static void	write_http_log(t_request *request, FILE *log_file)
 {
-	char	*time;
-
-	time = get_time();
-	write_log_head(request, log_file, time);
+	request->date = get_date();
+	write_log_head(request, log_file);
 	fprintf(log_file, "%s|%ld|%s|", request->fields[HTTP_METHOD],
 		request->response_code, request->fields[HTTP_CODE]);
 	if (request->response_code == 0)
 		fprintf(log_file, "TIMEOUT|");
 	else
 		fprintf(log_file, "%.1f ms|", request->latency);
-	write_http_log_status(request, log_file, time);
+	write_http_log_status(request, log_file);
 	fflush(log_file);
 }
 
-static void	write_http_log_status(t_request *request, FILE *log_file,
-	char *time)
+static void	write_http_log_status(t_request *request, FILE *log_file)
 {
 	int	expected_code;
 
@@ -69,11 +65,11 @@ static void	write_http_log_status(t_request *request, FILE *log_file,
 	if (request->response_code != expected_code)
 	{
 		fprintf(log_file, "UNHEALTHY\n");
-		print_simple(request, time, FALSE);
+		print_simple(request, FALSE);
 	}
 	else
 	{
 		fprintf(log_file, "HEALTHY\n");
-		print_simple(request, time, TRUE);
+		print_simple(request, TRUE);
 	}
 }
