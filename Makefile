@@ -17,9 +17,6 @@ CFLAGS_LIBS			= $(CFLAGS_LIBFT) $(CFLAGS_LIBCURL)
 CFLAGS_LIBCURL		= -lcurl
 CFLAGS_LIBFT		= -lft -L $(LIBFT_DIR) -I $(LIBFT_DIR)
 
-VALGRIND			= valgrind --leak-check=full --show-leak-kinds=all
-VALGRIND			+= --track-origins=yes --tool=memcheck --quiet
-
 INCLUDE_DIR			= include
 SRC_DIR				= src
 OBJ_DIR				= obj
@@ -62,15 +59,5 @@ re_bonus:			fclean bonus
 
 compile_message:
 					echo $(COMPILING_MSG)
-
-run:				all
-					./monitoring
-
-runv:				all
-					$(VALGRIND) ./monitoring
-
-debug:				required
-					@$(CC) -g $(MAIN) $(OBJ_FILES) $(CFLAGS) -o debug
-					echo $(DONE_MSG)
 
 .PHONY:	all run clean fclean re run libft
