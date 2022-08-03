@@ -25,7 +25,7 @@ informações continas nesse arquivo
 
 Possuir instalado as seguintes dependências:
 ```txt
-libcurl, dig, ping
+libcurl dig ping
 ```
 
 ## Como rodar
