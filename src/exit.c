@@ -4,6 +4,7 @@ void	stop_monitoring(t_request *first_request, FILE *log_file)
 {
 	fclose(log_file);
 	free_requests(first_request);
+	curl_global_cleanup();
 }
 
 void	free_requests(t_request *first_request)

@@ -4,10 +4,17 @@ static void	print_log(char *line);
 static void	print_head_log(char **log_data);
 static void print_end_log(char **log_data, int latency_index, int status_index);
 
-void	read_simple(int log_fd)
+void	read_simple(void)
 {
+	int		log_fd;
 	char	*line;
 
+	log_fd = open("monitoring.log", O_RDONLY);
+	if (log_fd == -1)
+	{
+		fprintf(stderr, "ERROR: Could not open monitoring.log\n");
+		exit(EXIT_FAILURE);
+	}
 	line = ft_get_next_line(log_fd);
 	printf("%s\n", line);
 	while (line != NULL)
@@ -16,6 +23,7 @@ void	read_simple(int log_fd)
 		free(line);
 		line = ft_get_next_line(log_fd);
 	}
+	close(log_fd);
 }
 
 static void	print_log(char *line)

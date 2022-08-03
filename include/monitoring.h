@@ -48,7 +48,15 @@ typedef struct s_request
 	void	*next;
 }	t_request;
 
+typedef struct s_overview
+{
+	char	*name;
+	int		healthy_count;
+	int		unhealthy_count;
+}	t_overview;
+
 /********** PROTOTYPES **********/
+void		read_args(int argc, char *argv[]);
 char		*get_time(void);
 void		request_http(t_request *request, FILE *log_file);
 char		**get_next_fields(int database_fd);
@@ -63,9 +71,10 @@ char		*get_dns_response(t_request *request, int data_file);
 void		request_ping(t_request *request, FILE *log_file);
 double		get_ping_latency(int data_file);
 void		start_monitoring(t_request *first_request, FILE *log_file);
-void		print_simple(t_request *request, char *time, int is_healthy);
 void		write_log_head(t_request *request, FILE *log_file, char *time);
-void		read_simple(int log_fd);
+void		print_simple(t_request *request, char *time, int is_healthy);
+void		read_simple(void);
+void		print_overviews(void);
 void		print_in_blue(char *message);
 void		print_in_red(char *message);
 void		print_in_green(char *message);
