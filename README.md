@@ -32,6 +32,7 @@ libcurl, dig, ping
 
 - Clone este repositório
 - Compile o projeto com `make`
+- Configure o arquivo `monitoring.db`
 - Execute o programa `monitoring`
 
 ## Como usar
