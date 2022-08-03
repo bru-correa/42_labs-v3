@@ -87,7 +87,7 @@ static char	*extract_response(char **header_data)
 
 	i = 0;
 	while (header_data[i] != NULL
-		&& strncmp(header_data[i], "status:", 8) != 0)
+		&& ft_strncmp(header_data[i], "status:", 8) != 0)
 		i++;
 	length = ft_strlen(header_data[i + 1]);
 	header_data[i + 1][length - 1] = '\0';
