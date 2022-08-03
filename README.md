@@ -54,7 +54,7 @@ As configurações para cada protocolo são:
 | PING        | nome, protocolo, endereço, intervalo                                    |
 | DNS         | nome, protocolo, endereço, intervalo, servidor DNS                      |
 
-O intervalo do monitoramento é medido em **minutos**, só aceitando números
+O intervalo do monitoramento será medido em **minutos**, só aceitando números
 inteiros.
 
 Abaixo, exemplo do arquivo descrito acima:
@@ -79,14 +79,14 @@ As informações dos serviços monitorados serão armazenadas no arquivo
 |-------------|-------------------------------------------------------------------------------------------------------------|
 | HTTP        | data, nome, protocolo, endereço, método HTTP, código HTTP retornado, código HTTP esperado, latência, status |
 | PING        | data, nome, protocolo, endereço, latência, status                                                           |
-| DNS         | data, nome, protocolo, endereçom, servidor DNS, resposta retornada, latência, status                        |
+| DNS         | data, nome, protocolo, endereço, servidor DNS, resposta retornada, latência, status                         |
 
-Todas as informações são separadas por um **|** entre elas.
+Todas as informações serão separadas por um **|** entre elas.
 
 O status será apresentado da seguinte maneira:
 
-- **HEALTHY**: quando o serviço está saudável.
-- **UNHEALTHY**: quando o serviço não está saudável.
+- **HEALTHY**: quando o serviço está saudável
+- **UNHEALTHY**: quando o serviço não está saudável
 
 Um serviço saudável é aquele que consegue responder a requisição do
 monitoramento de forma esperada, em contrapartida ao serviço não saudável, que
@@ -94,12 +94,12 @@ não responde de forma esperada.
 
 Será mostrado na saída padrão do terminal um breve resumo dos resultados do
 monitoramento, conforme eles forem ocorrendo. Caso queria recuperar essas
-informações após o término do programa, basta iniciar o programa `monitoring`
-com a flag `--simplify` que ele irá mostrar novamente as informações no arquivo
-`monitoring.log` de forma resumida.
+informações após o término do programa, basta iniciá-lo com a flag `--simplify`
+que ele irá mostrar novamente as informações do arquivo `monitoring.log` de
+forma resumida.
 
 Caso queria ver uma visão geral do resultado de todos os monitoramentos
-realizados, inicie o programa `monitoring` com a flag `--overview`, e ele irá
+realizados, inicie o programa com a flag `--overview`, e ele irá
 mostrá-la na saída padrão do terminal, seguindo o seguinte padrão:
 
 - Nome da requisição

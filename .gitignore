@@ -1,6 +1,7 @@
 obj
 monitoring
 monitoring.log
+monitoring.db
 *.o
 *.a
 .vscode
