@@ -5,7 +5,7 @@ static void	check_overview(char *arg);
 
 void	read_args(int argc, char *argv[])
 {
-	int		i;
+	int	i;
 
 	if (argc == 1)
 		return ;
