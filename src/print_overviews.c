@@ -45,7 +45,7 @@ static t_overview	*get_next_overview(int database_fd)
 static void	print_overview(t_overview *overview)
 {
 	get_overview_data(overview);
-	printf("----------------------------------------\n");
+	print_divider();
 	print_in_blue("Name:");
 	printf("%s\n", overview->name);
 	print_in_blue("Healthy:");

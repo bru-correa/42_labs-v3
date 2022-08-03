@@ -19,7 +19,7 @@ void	print_simple(t_request *request, char *time, int is_healthy)
 
 static void	print_simple_head(t_request *request, char *time)
 {
-	printf("----------------------------------------\n");
+	print_divider();
 	print_in_blue("Name:");
 	printf("%s\n", request->fields[NAME]);
 	print_in_blue("Address:");

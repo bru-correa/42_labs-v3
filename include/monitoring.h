@@ -78,5 +78,6 @@ void		print_overviews(void);
 void		print_in_blue(char *message);
 void		print_in_red(char *message);
 void		print_in_green(char *message);
+void		print_divider(void);
 
 #endif

@@ -14,3 +14,8 @@ void	print_in_green(char *message)
 {
 	printf("\033[0;32m%s\033[0m\n", message);
 }
+
+void	print_divider(void)
+{
+	printf("----------------------------------------\n");
+}
