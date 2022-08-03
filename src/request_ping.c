@@ -14,7 +14,6 @@ void	request_ping(t_request *request, FILE *log_file)
 	close(pipe_fd[READ_END]);
 }
 
-// ! NULL output to STDOUT if it fail's, it will just print to STDERR (doc)
 static void	exec_ping(t_request *request, pid_t pid, int *pipe_fd)
 {
 	if (pid == CHILD_ID)
