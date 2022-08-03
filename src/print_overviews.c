@@ -41,7 +41,6 @@ static t_overview	*get_next_overview(int database_fd)
 	return (overview);
 }
 
-// TODO Add print div to print_utils
 static void	print_overview(t_overview *overview)
 {
 	get_overview_data(overview);

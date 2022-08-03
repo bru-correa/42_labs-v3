@@ -1,6 +1,5 @@
 #include "monitoring.h"
 
-// TODO Fix the \n at the end
 char	*get_time(void)
 {
 	time_t		raw_time;

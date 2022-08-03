@@ -39,6 +39,7 @@
 # define LOG_PING_STATUS 5
 
 /********** STRUCTS **********/
+// Store request data from the monitoring.db
 typedef struct s_request
 {
 	char	**fields;
@@ -48,6 +49,7 @@ typedef struct s_request
 	void	*next;
 }	t_request;
 
+// Store how many times each request name have passed or failed
 typedef struct s_overview
 {
 	char	*name;
@@ -79,5 +81,8 @@ void		print_in_blue(char *message);
 void		print_in_red(char *message);
 void		print_in_green(char *message);
 void		print_divider(void);
+void		set_url_prefix(char *url);
+size_t		ignore_curl_output(void *buffer, size_t size, size_t nmemb,
+	void*userp);
 
 #endif
