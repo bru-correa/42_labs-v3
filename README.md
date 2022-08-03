@@ -89,12 +89,12 @@ O status será apresentado da seguinte maneira:
 - **HEALTHY**: quando o serviço está saudável
 - **UNHEALTHY**: quando o serviço não está saudável
 
-Um serviço saudável é aquele que consegue responder a requisição do
-monitoramento de forma esperada, em contrapartida ao serviço não saudável, que
+Um serviço saudável é aquele que consegue responder à requisição do
+monitoramento de forma esperada, em contrapartida, ao serviço não saudável, que
 não responde de forma esperada.
 
 Será mostrado na saída padrão do terminal um breve resumo dos resultados do
-monitoramento, conforme eles forem ocorrendo. Caso queria recuperar essas
+monitoramento, conforme eles forem a ocorrer. Caso queria recuperar essas
 informações após o término do programa, basta iniciá-lo com a flag `--simplify`
 que ele irá mostrar novamente as informações do arquivo `monitoring.log` de
 forma resumida.
